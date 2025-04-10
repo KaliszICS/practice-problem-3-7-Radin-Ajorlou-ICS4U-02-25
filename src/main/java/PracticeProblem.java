@@ -1,27 +1,63 @@
 public class PracticeProblem {
 
 	public static void main(String args[]) {
+		String[][] maze = {
+			{"i", "i", "i", "i", "i"},
+			{"i", "i", "i", "i", "i"},
+			{"i", "i", "*", "i", "i"},
+			{"S", "*", "F", "i", "i"},
+		  };
+		  System.out.println(searchMazeMoves(maze));
 
 	}
 
-	public static void q1() {
-		//Write question 1 code here
+
+
+	public static int searchMazeMoves(String[][] arr){
+		int row = arr.length - 1;
+		int column = 0;
+		int moves = 0;
+		int leastMoves = 1000;
+		leastMoves = mazeHelper(arr, row, column, moves, leastMoves);
+		if (leastMoves == 1000){
+			return -1;
+		}
+		return leastMoves;
 	}
 
-	public static void q2() {
-		//Write question 2 code here
-	}
 
-	public static void q3() {
-		//Write question 3 code here
-	}
+	public static int mazeHelper(String[][] arr, int row, int column, int moves, int leastMoves){
+		if (row < 0 || row >= arr.length || column < 0 || column >= arr[row].length || arr[row][column] == "*"){
+			moves--;
+			return leastMoves;
+		}
+		else if (arr[row][column] == "F"){
+			System.out.println("\nFOUND " + moves);
+			if (moves <= leastMoves){
+				leastMoves = moves;
+				return leastMoves;
+			}
+			return leastMoves;
+		}
 
-	public static void q4() {
-		//Write question 4 code here
-	}
+		arr[row][column] = "*";
 
-	public static void q5() {
-		//Write question 5 code here
+		moves++;
+		leastMoves = mazeHelper(arr, row, column + 1, moves, leastMoves); //move right
+		moves--;
+		moves++;
+		leastMoves = mazeHelper(arr, row - 1, column, moves, leastMoves); //move up 
+		moves--;
+		moves++;
+		leastMoves = mazeHelper(arr, row, column - 1, moves, leastMoves); //move left
+		moves--;
+		moves++;
+		leastMoves = mazeHelper(arr, row + 1, column, moves, leastMoves); //move down
+		arr[row][column] = "";
+
+		return leastMoves;
+
+
 	}
 
 }
